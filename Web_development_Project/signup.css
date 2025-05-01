@@ -1,0 +1,59 @@
+/* === signup.css === */
+
+/* Style for the Signup Section Container */
+.signup-section {
+  display: flex; /* Use Flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  min-height: 100vh; /* Full viewport height */
+  background: linear-gradient(to right, #001f3f, #003366); /* Blue gradient background */
+  color: white; /* Text color */
+  padding: 2rem; /* Space inside the section */
+}
+
+/* Style for the Signup Form Box */
+.signup-form {
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background */
+  padding: 2rem 3rem; /* Padding inside the form */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3); /* Soft shadow around the form */
+  width: 100%;
+  max-width: 500px; /* Max width to keep it compact */
+}
+
+/* Heading Styling inside the Signup Form */
+.signup-form h1 {
+  text-align: center; /* Center align heading */
+  margin-bottom: 1.5rem; /* Space below heading */
+  color: gold; /* Gold color for form title */
+}
+
+/* Style for Input Fields and Dropdown Select */
+.signup-form input,
+.signup-form select {
+  width: 100%; /* Full width */
+  padding: 0.75rem; /* Inner padding */
+  margin: 0.5rem 0 1rem 0; /* Margin around each input */
+  border-radius: 5px; /* Rounded input edges */
+  border: 1px solid #ccc; /* Light border */
+  font-size: 1rem; /* Font size */
+}
+
+/* Style for the Submit Button */
+.signup-form button {
+  width: 100%; /* Full width button */
+  padding: 0.8rem; /* Inner padding */
+  background-color: red; /* Red background */
+  color: white; /* White text */
+  border: none; /* Remove default border */
+  font-weight: bold; /* Bold text */
+  border-radius: 5px; /* Rounded edges */
+  font-size: 1rem; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+/* Button Hover Effect */
+.signup-form button:hover {
+  background-color: darkred; /* Darker red on hover */
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Subscriber List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+    }
+    #searchBar {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    #exportButton {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #exportButton:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Panel: Weekly Challenge Subscribers</h1>
+  <input type="text" id="searchBar" placeholder="Search by name, username, or email...">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Full Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Birthdate</th>
+        <th>Subscribed At</th>
+      </tr>
+    </thead>
+    <tbody id="subscriberTableBody">
+      <!-- Subscriber rows will be injected here -->
+    </tbody>
+  </table>
+  <button id="exportButton">Export to CSV</button>
+
+  <script>
+    function loadSubscribers(filter = "") {
+      const subscribers = JSON.parse(localStorage.getItem("subscribers")) || [];
+      const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+      const timestamps = JSON.parse(localStorage.getItem("subscriptionTimestamps")) || {};
+      const tbody = document.getElementById("subscriberTableBody");
+      tbody.innerHTML = "";
+
+      subscribers.forEach((email, index) => {
+        const account = accounts.find(acc => acc.email === email);
+        const matchFilter = filter.toLowerCase();
+        if (account && (
+          account.fullname.toLowerCase().includes(matchFilter) ||
+          account.username.toLowerCase().includes(matchFilter) ||
+          account.email.toLowerCase().includes(matchFilter)
+        )) {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${account.fullname}</td>
+            <td>${account.username}</td>
+            <td>${account.email}</td>
+            <td>${account.gender}</td>
+            <td>${account.birthdate}</td>
+            <td>${timestamps[email] || "N/A"}</td>
+          `;
+          tbody.appendChild(row);
+        }
+      });
+    }
+
+    function exportToCSV() {
+      const subscribers = JSON.parse(localStorage.getItem("subscribers")) || [];
+      const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+      const timestamps = JSON.parse(localStorage.getItem("subscriptionTimestamps")) || {};
+      let csvContent = "data:text/csv;charset=utf-8,Full Name,Username,Email,Gender,Birthdate,Subscribed At\n";
+
+      subscribers.forEach(email => {
+        const account = accounts.find(acc => acc.email === email);
+        if (account) {
+          const line = `${account.fullname},${account.username},${account.email},${account.gender},${account.birthdate},${timestamps[email] || "N/A"}`;
+          csvContent += line + "\n";
+        }
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "subscribers.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    document.getElementById("exportButton").addEventListener("click", exportToCSV);
+    document.getElementById("searchBar").addEventListener("input", (e) => {
+      loadSubscribers(e.target.value);
+    });
+
+    loadSubscribers();
+
+    window.addEventListener("storage", function(event) {
+      if (event.key === "subscribers" || event.key === "subscriptionTimestamps") {
+        loadSubscribers();
+      }
+    });
+  </script>
+</body>
+</html>
