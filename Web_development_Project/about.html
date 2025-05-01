@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic page setup -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - Endurance Website</title>
+
+  <!-- External CSS for site styling -->
+  <link rel="stylesheet" href="Web_development.css">
+
+  <!-- Inline CSS for interactive star rating system -->
+  <style>
+    .star-rating {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+      margin: 1rem 0;
+    }
+
+    .star-rating input[type="radio"] {
+      display: none;
+    }
+
+    .star-rating label {
+      font-size: 2.5rem;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .star-rating input[type="radio"]:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: gold;
+    }
+
+    .star-rating label:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- === Navigation Bar === -->
+  <header>
+    <nav>
+      <ul class="navbar">
+        <li><a href="Index.html#home">Home</a></li>
+        <li><a href="Index.html#events">Events</a></li>
+        <li><a href="Index.html#gear">Gear</a></li>
+        <li><a href="Index.html#community">Community</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- === About Section === -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>
+      Welcome to our endurance community! We are passionate about pushing limits, embracing challenges, and building strength — both physically and mentally.
+      Our mission is to empower athletes of all levels through events, gear, and support. Join us and become part of the movement!
+    </p>
+  </section>
+
+  <!-- === Combined Contact + Feedback Section === -->
+  <section id="contact-feedback">
+    <h2>Contact Us & Rate Our Site</h2>
+
+    <!-- Contact and Rating Form -->
+    <form class="contact-form" action="https://formsubmit.co/jakepatsakos27@gmail.com" method="POST">
+
+      <!-- Basic Contact Information -->
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+
+      <!-- Star Rating Input -->
+      <label>Your Rating:</label>
+      <div class="star-rating">
+        <input type="radio" id="star5" name="rating" value="5"><label for="star5">&#9733;</label>
+        <input type="radio" id="star4" name="rating" value="4"><label for="star4">&#9733;</label>
+        <input type="radio" id="star3" name="rating" value="3"><label for="star3">&#9733;</label>
+        <input type="radio" id="star2" name="rating" value="2"><label for="star2">&#9733;</label>
+        <input type="radio" id="star1" name="rating" value="1"><label for="star1">&#9733;</label>
+      </div>
+
+      <!-- Extra Feedback Box -->
+      <textarea name="feedback" placeholder="Tell us more about your experience..." rows="4"></textarea>
+
+      <!-- Submit Button -->
+      <button type="submit">Send Message & Rating</button>
+
+      <!-- Hidden fields for FormSubmit configuration -->
+      <input type="hidden" name="_subject" value="New Contact and Rating Submission!">
+      <input type="hidden" name="_captcha" value="false">
+    </form>
+  </section>
+
+  <!-- === Script to Require Login for Contact Form === -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+      const account = JSON.parse(localStorage.getItem("account"));
+
+      if (!isLoggedIn || !account) {
+        alert("Please log in before contacting us.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const form = document.querySelector('.contact-form');
+
+      const fullNameInput = document.createElement('input');
+      fullNameInput.type = 'hidden';
+      fullNameInput.name = 'Account Full Name';
+      fullNameInput.value = account.fullname;
+
+      const usernameInput = document.createElement('input');
+      usernameInput.type = 'hidden';
+      usernameInput.name = 'Account Username';
+      usernameInput.value = account.username;
+
+      const emailInput = document.createElement('input');
+      emailInput.type = 'hidden';
+      emailInput.name = 'Account Email';
+      emailInput.value = account.email;
+
+      form.appendChild(fullNameInput);
+      form.appendChild(usernameInput);
+      form.appendChild(emailInput);
+    });
+  </script>
+
+</body>
+</html>
